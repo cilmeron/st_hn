@@ -1,0 +1,9 @@
+.copy__btn{
+    border: 1px solid rgb(31,65,130);
+    transition: 0.3s ease;
+  }
+
+  .copy__btn:hover{
+    background: rgba(31,65,130, 0.9);
+    color: #FFFFFF;
+  }

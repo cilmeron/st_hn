@@ -1,0 +1,448 @@
+
+
+@media screen and (min-aspect-ratio: 16/9) {
+    :root {
+        --line-thickness: 4%;
+        --line-thickness-b: 2%;
+        --top-spacing: 1%;
+        --button-height: 6%;
+        --button-spacing: 0.5%;
+        --button-width: 100%;
+        --corner-height: 10%;
+        --transition-time: 0.3s;
+        --result-button-width: 8%;
+        --result-button-height: 4%;
+        --left-width: 9%;
+        --left-spacing: 0.2%;
+        --button-color1: #cc33ff;
+        --button-color2: #4455ff;
+        --button-color3: #aa99ff;
+        --button-color4: #ff9900;
+        --button-color5: #7777ff;
+        --button-color6: #cc55ff;
+    }
+    .voting-container {
+        display: flex;        /* Enables flexbox */
+        justify-content: space-between; /* Distributes space between children */
+    }
+
+    .votediv {
+        flex: 1;              /* Each child will take up equal space */
+        text-align: center;   /* Centers the text and images within each voting field */
+        margin: 10px;         /* Optional: Adds space around each voting field */
+    }
+}
+
+@media screen and (max-aspect-ratio: 4/3) {
+    :root {
+        --line-thickness: 3%;
+        --line-thickness-b: 1.5%;
+        --top-spacing: 1%;
+        --button-height: 3.5%;
+        --button-spacing: 0.5%;
+        --button-width: 100%;
+        --corner-height: 10%;
+        --transition-time: 0.3s;
+        --left-width: 13%;
+        --left-spacing: 0.2%;
+        --result-button-width: 20%;
+        --result-button-height: 4%;
+        --button-color1: #cc33ff;
+        --button-color2: #4455ff;
+        --button-color3: #aa99ff;
+        --button-color4: #ff9900;
+        --button-color5: #7777ff;
+        --button-color6: #cc55ff;
+    }
+    .votediv {
+        text-align: center;   /* Centers the text and images within each voting field */
+        margin: 10px;         /* Optional: Adds space around each voting field */
+    }
+}
+
+@media screen and (min-aspect-ratio: 4/3) and (max-aspect-ratio: 16/9) {
+    :root {
+        --line-thickness: 3.5%;
+        --line-thickness-b: 1.75%;
+        --top-spacing: 1%;
+        --button-height: 4.5%;
+        --button-spacing: 0.5%;
+        --button-width: 100%;
+        --corner-height: 10%;
+        --transition-time: 0.3s;
+        --left-width: 11%;
+        --left-spacing: 0.2%;
+        --result-button-width: 14%;
+        --result-button-height: 4%;
+        --button-color1: #cc33ff;
+        --button-color2: #4455ff;
+        --button-color3: #aa99ff;
+        --button-color4: #ff9900;
+        --button-color5: #7777ff;
+        --button-color6: #cc55ff;
+    }
+
+    .voting-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .votediv {
+        flex: 1;
+        text-align: center;
+        margin: 10px;
+    }
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active
+{
+    color: #000000;
+    text-decoration: none;
+}
+
+html {
+    color: #ffffff;
+    background: #000000;
+    font-size: 22px;
+}
+.vote {
+    width: 70%;
+}
+.voteimgdiv {
+    height:90%;
+}
+.voteimgdiv:hover {
+    transform: scale(1.01);
+}
+.voteimgdiv img {
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+.results {
+    width: 60%;
+}
+.gotoresults{
+    position: absolute;
+    z-index: 200;
+    top: calc(var(--top-spacing) * 2 + var(--line-thickness) + 1%);
+    right: 10%;
+    width: var(--result-button-width);
+    height: var(--result-button-height);
+    background: #ffaa90;
+    border-radius: 50px;
+}
+.gotoresults img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+div {
+    margin-top: -1px;
+    padding-top: 1px;
+    margin-left: -1px;
+    padding-left: 1px;
+}
+.quartercircle_left {
+    position: absolute;
+    width: var(--left-width);
+    height: var(--corner-height);
+    background: #dd4444;
+    top: var(--top-spacing);
+    left: var(--left-spacing);
+    border-radius: 90% 0 0 0;
+}
+.lcars_text_1 {
+    color: #000000;
+    position: absolute;
+    bottom: 0px;
+    right: 5%;
+}
+.line_1 {
+    position: absolute;
+    width: 20%;
+    height: var(--line-thickness);
+    top: var(--top-spacing);
+    left: calc(var(--left-width) + var(--left-spacing));
+    background: #dd4444;
+}
+.line_1b {
+    position: absolute;
+    width: 6%;
+    height: 5%;
+    left: calc(var(--left-width) + var(--left-spacing));
+    top: calc(var(--top-spacing) + var(--line-thickness));
+    background: #dd4444;
+}
+.innerquartercircle_left {
+    position: absolute;
+    width: 6%;
+    height: calc(5% + 1px);
+    left: calc(var(--left-width) + var(--left-spacing) + 1px);
+    background: #000000;
+    border-radius: 70% 0 0 0;
+    top: calc(var(--top-spacing) + var(--line-thickness));
+}
+.line_2 {
+    position: absolute;
+    width: 9%;
+    height: var(--line-thickness);
+    background: #ffaa90;
+    left: calc(var(--left-width) + var(--left-spacing) + 20% + var(--button-spacing));
+    top: var(--top-spacing);
+}
+.line_3 {
+    position: absolute;
+    width: 16%;
+    height: var(--line-thickness-b);
+    background: #dd4444;
+    left: calc(var(--left-width) + var(--left-spacing) + 20% + 9% +  var(--button-spacing) * 2);
+    top: var(--top-spacing);
+}
+.main {
+    position: absolute;
+    height: 82.5%;
+    width: 70%;
+    top: 10%;
+    left: 20%;
+    z-index: 100;
+    overflow-y:auto;
+}
+.main2 {
+    position: absolute;
+    height: 82.5%;
+    width: 70%;
+    top: 10%;
+    left: 20%;
+    z-index: 100;
+    overflow:hidden;
+}
+.main2 img {
+    object-fit: contain;
+    position: absolute;
+    top: 20%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;  /* Ensure the image covers the full width of its container */
+    height: 80%; /* Ensure the image covers the full height of its container */
+}
+.line_4 {
+    position: absolute;
+    width: 32%;
+    height: var(--line-thickness);
+    background: #9944ff;
+    left: calc(var(--left-width) + var(--left-spacing) + 20% + 9% + 16% + var(--button-spacing) * 3);
+    top: var(--top-spacing);
+}
+.line_5 {
+    position: absolute;
+    width: 11%;
+    height: var(--line-thickness);
+    background: #ffaa90;
+    left: calc(var(--left-width) + var(--left-spacing) + 20% + 9% + 16% + 32% + var(--button-spacing) * 4);
+    top: var(--top-spacing);
+}
+.b_text{
+    position: absolute;
+    bottom: 0%;
+    right: 5%;
+    overflow: hidden;
+}
+.b_img {
+    position: absolute;
+    width: var(--left-width);
+    height: var(--button-height);
+    left: var(--left-spacing);
+    background: #cc33ff; /* Default background */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.b_img img {
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;  /* Ensure the image covers the full width of its container */
+    height: 100%; /* Ensure the image covers the full height of its container */
+}
+
+.button_repl {
+    position: absolute;
+    width: var(--left-width);
+    height: calc((var(--button-spacing) + var(--button-height)) * 5 + var(--button-height));
+    top: calc(var(--corner-height) + (var(--button-spacing) * 1) + var(--top-spacing));
+    left: var(--left-spacing);
+    background: #cc33ff; /* Default background */
+}
+
+.b_1 {background: var(--button-color1); top: calc(var(--corner-height) + (var(--button-spacing) * 1) + var(--top-spacing));}
+.b_2 {background: var(--button-color2); top: calc(var(--corner-height) + (var(--button-spacing) * 1) + var(--top-spacing) + (var(--button-height) + var(--button-spacing)) * 1);}
+.b_3 {background: var(--button-color3); top: calc(var(--corner-height) + (var(--button-spacing) * 1) + var(--top-spacing) + (var(--button-height) + var(--button-spacing)) * 2);}
+.b_4 {background: var(--button-color4); top: calc(var(--corner-height) + (var(--button-spacing) * 1) + var(--top-spacing) + (var(--button-height) + var(--button-spacing)) * 3);}
+.b_5 {background: var(--button-color5); top: calc(var(--corner-height) + (var(--button-spacing) * 1) + var(--top-spacing) + (var(--button-height) + var(--button-spacing)) * 4);}
+.b_6 {background: var(--button-color6); top: calc(var(--corner-height) + (var(--button-spacing) * 1) + var(--top-spacing) + (var(--button-height) + var(--button-spacing)) * 5);}
+
+/*Hover states - modifying the background color */
+
+.b_1:hover { background: #cc66ff; }
+.b_2:hover { background: #4488ff; }
+.b_3:hover { background: #aaccff; }
+.b_4:hover { background: #ffcc00; }
+.b_5:hover { background: #77aaff; }
+.b_6:hover { background: #cc88ff; }
+
+.bottom_remainder {
+    position: absolute;
+    width: var(--left-width);
+    height: calc(
+        100% -
+        ((var(--corner-height) + var(--top-spacing)) * 2) -
+        ((var(--button-height) + var(--button-spacing)) * 6) -
+        (var(--button-spacing) * 2)
+        );
+    left: var(--left-spacing);
+    top: calc((var(--button-spacing) + var(--button-height)) * 6 + var(--top-spacing) + var(--corner-height) + var(--button-spacing));
+    background: #ffaa90;
+}
+.bottom {
+    position: absolute;
+    width: var(--left-width);
+    height: var(--corner-height);
+    left: var(--left-spacing);
+    top: 89%;
+    background: #dd4444;
+    border-radius: 0 0 0 90%;
+}
+.line_footer1b {
+    position: absolute;
+    width: 6%;
+    height: 5%;
+    left: calc(var(--left-width) + var(--left-spacing));
+    bottom: calc(var(--top-spacing) + var(--line-thickness));
+    background: #dd4444;
+}
+
+.innerquartercircle_footer {
+    position: absolute;
+    width: 6%;
+    height: 5%;
+    left: calc(var(--left-width) + var(--left-spacing) + 1px);
+    background: #000000;
+    border-radius: 0 0 0 70%;
+    bottom: calc(var(--top-spacing) + var(--line-thickness));
+}
+.line_footer1 {
+    position: absolute;
+    width: 4%;
+    height: var(--line-thickness);
+    bottom: var(--top-spacing);
+    left: calc(var(--left-spacing) + var(--left-width));
+    background: #dd4444;
+}
+.line_footer2 {
+    position: absolute;
+    width: 16%;
+    left: calc(var(--left-width) + 4% + var(--left-spacing) * 2);
+    height: var(--line-thickness-b);
+    bottom: var(--top-spacing);
+    background: #9944ff;
+}
+.gender {
+    position: absolute;
+    width: 10%;
+    left: calc(var(--left-width) + 4% + 16% + var(--left-spacing) * 3);
+    height: var(--line-thickness);
+    bottom: var(--top-spacing);
+    background: #ffaa90
+}
+.gender:hover {
+    background: #ff7790
+}
+.gender img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.line_footer3 {
+    position: absolute;
+    width: 10%;
+    left: calc(var(--left-width) + 4% + 16% + 10% + var(--left-spacing) * 4);
+    background: #4488ff;
+    height: var(--line-thickness);
+    bottom: var(--top-spacing);
+}
+
+.main_all {
+    position: absolute;
+    width: 10%;
+    left: calc(var(--left-width) + 4% + 16% + 10% + 10% + var(--left-spacing) * 5);
+    height: var(--line-thickness);
+    bottom: var(--top-spacing);
+    background: #ffcc00
+}
+.main_all:hover {
+    background: #ff9900
+}
+.main_all img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.line_footer4 {
+    position: absolute;
+    width: 20%;
+    left: calc(var(--left-width) + 4% + 16% + 10% + 10% + 10% + var(--left-spacing) * 6);
+    background: #cc66ff;
+    height: var(--line-thickness-b);
+    bottom: var(--top-spacing);
+}
+.line_footer5 {
+    position: absolute;
+    width: 8%;
+    background: #ff9900;
+    left: calc(var(--left-width) + 4% + 16% + 10% + 10% + 10% + 20% + var(--left-spacing) * 7);
+    height: var(--line-thickness);
+    bottom: var(--top-spacing);
+}
+.copyright {
+    position: absolute;
+    width: 10%;
+    height: var(--line-thickness);
+    bottom: var(--top-spacing);
+    left: calc(var(--left-width) + 4% + 16% + 10% + 10% + 10% + 20% + 8% + var(--left-spacing) * 8);
+    background: #dd4444;
+}
+
+.copyright img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
