@@ -17,47 +17,21 @@ else
 function vote($category, $gender)
 {
     global $_POST, $series_mask, $gender_mask, $resultdiv, $main_all, $_GET, $result;
+    
     include "db.php";
-    $conn = new mysqli($server, $user, $pw, $db);
+    include "functions.php";
 
-    if ($conn->connect_error)
-    {
-        die("Connection failed:". $conn->connect_error);
-    }
-    $genderdiff = intval(0);
-    $genderfilter = "WHERE gender = ".$gender_mask[$gender];
-    if ($gender == "unisex")
-    {
-        $genderdiff = intval(10);
-        $genderfilter = "WHERE 1";
-    }
-    $exclude = "''";
-    $done = "";
-    $limit = "LIMIT 2;";
+    $genderselect = select_gender($gender_mask, $gender);
+    $genderdiff = get_gender_diff($gender);
+    $genderfilter = filter_gender($gender_mask, $gender);
+    $end = 0;
     $chars = array();
-    $mainint = 1;
-    if ($category == "all")
-    {
-        $ws = "";
-        $local = 0;
-    }
-    else
-    {
-        $ws = "AND characters.series = ".$series_mask[$category];
-        $local = 1;
-    }
-    if ($main_all == "main")
-    {
-        $mf = "AND type=1";
-        $mainint=intval(1+$genderdiff);
-    }
-    else
-    {
-        $mf = "";
-        $mainint=intval(0+$genderdiff);
-    }
-
-
+    $mainint = get_mainint($genderdiff, $main_all);
+    $ws = get_ws($category, $series_mask);
+    $local = get_local($category);
+    $mf = get_mf($main_all);
+    $mainall = get_mainall($main_all);
+    
     if (isset($_GET['results']))
     {
 
@@ -89,79 +63,75 @@ function vote($category, $gender)
     {
         if(isset($_POST['voted']))
         {
-            $mainall = 1;
-            $local = 1;
-            if ($category == "all")
-                $local = 0;
-            if ($main_all == "all")
-                $mainall = 0;
-            $mainall = $mainall+$genderdiff;
             $sql = "INSERT INTO scores (characters_id, score, local, main) VALUES(".$_POST['winnerid'].", 1, ".$local.", ".$mainall.") ON DUPLICATE KEY UPDATE score=score+1;";
             $conn->query($sql);
-            $limit = "LIMIT 1;";
-            if (isset($_POST['prev']))
+            $list = $_POST['list'];
+            $idx = $_POST['idx'];
+            $sql = get_vote($_POST['list'], $idx, $genderselect, $ws, $mf);
+            if (strlen($_POST['list2']) > 1)
+                $list2 = $_POST['list2'].",".$_POST['winnerid'];
+            else
+                $list2 = $_POST['winnerid'];
+            
+            if(count(json_decode($list, true)) == 2)
             {
-                $done = $_POST['prev'];
+                $end = 1;
+                $winner = select(get_winner($_POST['winnerid']), $conn)[0];
+                $imagefolder = get_image_folder($winner['gender'], $gender_mask, $winner['series'], $series_mask);
+                echo "Your favorite ".$gender." Star Trek (".strtoupper($category).") character is:<br>\n";
+                echo "<center><h4>".$winner['name']."</h4><br>\n";
+                echo "<button class=\"btn copy__btn\" onclick=\"copyCaption('http://www.ambarenya.net/result.php?id=".$_POST['winnerid']."&cat=".$category."')\">Share Result</button><br>";
+                echo "<img src='img/".$imagefolder."/".$winner['fname']."'>\n";
             }
-            $ids = explode(",", $done);
-            foreach($ids as $id)
+            else
             {
-                $exclude .= "'".$id."',";
+                if (strpos($sql, "DONE") !== FALSE)
+                {
+                    $remid = intval(explode("DONE", $sql)[1]);
+                    if ($remid > 1)
+                        $list2 = $remid.",".$list2;
+                    $n = explode(",", $list2);
+                    $list = json_encode($n);
+                    $list2 = "";
+                    $idx = 0;
+                    $sql = get_vote($list, $idx, $genderselect, $ws, $mf);
+                    $vote = select($sql, $conn);
+                }
+                else
+                {
+                    $vote = select($sql, $conn);
+                }
             }
-            $exclude = substr($exclude, 0, -1);
-            $winner['ID'] = $_POST['winnerid'];
-            $winner['name'] = $_POST['winnername'];
-            $winner['fname'] = $_POST['winnerfname'];
-            $winner['series'] = $_POST['winnerseries'];
-            $winner['gender'] = $_POST['winnergender'];
-            $chars[] = $winner;
-
-        }
-
-        $genderselect = "gender = '".$gender_mask[$gender]."'";
-        if ($gender == "unisex")
-            $genderselect = "1";
-
-        $sql = "SELECT * FROM characters WHERE ".$genderselect." 
-        ".$ws."
-        ".$mf."
-        AND ID NOT IN (".$exclude.") ORDER BY RAND() ".$limit;
-        $results = $conn->query($sql);
-        $m = 0;
-        while ($row = $results->fetch_assoc())
-        {
-            $m++;
-            $done .= ",".$row['ID'];
-            $chars[] = $row;
-        }
-        if ($m == 0)
-        {
-            echo "Your favorite ".$gender." Star Trek (".strtoupper($category).") character is:<br>\n";
-            echo "<center><h4>".htmlspecialchars($winner['name'])."</h4><br>\n";
-            echo "<button class=\"btn copy__btn\" onclick=\"copyCaption('http://www.ambarenya.net/result.php?id=".$_POST['winnerid']."&cat=".$category."')\">Share Result</button><br>";
-            echo "<img src='img/".array_search($winner['series'], $series_mask)."/".substr(array_search($winner['gender'], $gender_mask), 0, 1)."/".$winner['fname']."'>\n";
-
         }
         else
         {
-            $opponents = $chars;
+            $sql = "SELECT * FROM characters WHERE ".$genderselect." ".$ws." ".$mf." ORDER BY RAND()";
+            $chars = select($sql, $conn);
+            $rounds = get_rounds(count($chars));
+            $list = json_encode(make_list($chars));
+            $list2 = "";
+            $sql = get_vote($list, 0, $genderselect, $ws, $mf);
+            $vote = select($sql, $conn);
+            $idx = 0;
+        }
+        if ($end != 1)
+        {
             echo "<form method='post' action='".makeurl($category, $gender, $main_all, $result)."' id='voteForm'>\n";
             echo "<div class='voting-container'>\n";
-            $sm = "";
-            foreach($opponents as $opps)
+            echo "<input type='hidden' name='list' value='".$list."'></input>";
+            echo "<input type='hidden' name='list2' value='".$list2."'></input>";
+            echo "<input type='hidden' name='idx' value='".intval($idx+1)."'></input>";
+            foreach($vote as $v)
             {
-                if ($category == "all")
-                {
-                    $sm = "(".strtoupper(array_search($opps['series'], $series_mask)).")";
-                }
-                $sgender = substr(array_search($opps['gender'], $gender_mask), 0, 1);
-                echo "<div class='votediv'>".htmlspecialchars($opps['name'])." ".$sm."\n";
-                echo "<div class='voteimgdiv' onclick='submitVote(this)' data-character-gender='".$opps['gender']."' data-character-series='".$opps['series']."' data-character-id='".$opps['ID']."' data-character-name='".htmlspecialchars($opps['name'])."' data-character-fname='".$opps['fname']."'>\n";
-                echo "<img src='img/".array_search($opps['series'], $series_mask)."/".$sgender."/".$opps['fname']."'></div></div>\n";
+                $sm = get_sm($category, $series_mask, $v['series']);
+                $imagefolder = get_image_folder($v['gender'], $gender_mask, $v['series'], $series_mask);              
+                echo "<div class='votediv'>".htmlspecialchars($v['name'])." ".$sm."\n";
+                echo "<div class='voteimgdiv' onclick='submitVote(this)' data-character-id='".$v['ID']."'>\n";
+                echo "<img src='img/".$imagefolder."/".$v['fname']."'></div></div>\n";
             }
+            
             echo "</div>\n";
             echo "<input type='hidden' name='voted' value='1'></input>";
-            echo "<input type='hidden' name='prev' value='".$done."'></input>";
             echo "</form>";
         }
     }
